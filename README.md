@@ -30,7 +30,7 @@ This module has **no third-party/community dependencies** and no additional modu
 2. Restart Foundry to discover the module.
 3. Open the desired world and enable **LaserW1tch's Landing Page Prototyper 5e** in Manage Modules.
 4. Open Configure Settings → LaserW1tch's Landing Page Prototyper 5e → **Create / Repair Landing**.
-5. The action creates one landing scene, one journal folder and six blank journals. It views the scene for the GM only. Activate the scene using Foundry’s normal controls when you want to bring players here.
+5. The action creates one landing scene, one journal folder and six blank journals. It then **activates** the landing scene, so everyone sees it at login. Connected players are moved to it.
 6. Single-click a card or Tab to it and press Enter/Space. Cast opens the live gallery; journal buttons open their blank journals; Maps shows configured Scene links.
 7. On Cast, the GM can use **Manage cast** to choose actors, their order, players and PC pronouns. By default, a fresh world uses non-GM players’ assigned characters automatically. See [Cast setup and live fields](docs/CAST.md).
 
@@ -56,6 +56,7 @@ New worlds do not create any demo characters or players.
 
 - Edit journal contents normally in Foundry. Do not delete module flags unless intentionally detaching a record.
 - The navigation displays only on the flagged landing scene. Switching scenes removes it.
+- Foundry shows everyone the world’s **active** scene at login. Create / Repair activates the landing. If you later activate another scene (such as a battle map), activate the landing again from the Scenes sidebar, or run Create / Repair, to bring everyone back.
 - The landing illustration is initially framed to fill the viewport. The entire overlay follows native scene zoom and pan, including mousewheel zoom over the cards. Camera zoom does not reflow or detach the layout. Foundry’s central pause graphic is hidden on this scene only; the world’s actual paused state is preserved.
 - Selected background images and videos are assigned to the Foundry Scene itself. The landing UI does not place a second HTML background over the canvas, so canvas effects such as FXMaster particles and filters can render with the scene. FXMaster is optional and is not a module dependency.
 - To temporarily hide the navigation while editing the scene, disable **Show landing navigation** in the module’s client settings. This affects your client only.

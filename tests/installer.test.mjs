@@ -4,7 +4,7 @@ import { installLanding } from '../scripts/installer.js';
 import { MODULE_ID, DESTINATIONS } from '../scripts/presentation.js';
 
 function document(data, collection, prefix) {
-  const result = { ...structuredClone(data), id: `${prefix}${collection.length}`, uuid: `${prefix}.${collection.length}`, getFlag(id,key) { return this.flags?.[id]?.[key]; }, async setFlag(id,key,value) { this.flags[id][key]=value; }, sheet: { async render(){} }, async view(){ this.viewed=true; } };
+  const result = { ...structuredClone(data), id: `${prefix}${collection.length}`, uuid: `${prefix}.${collection.length}`, getFlag(id,key) { return this.flags?.[id]?.[key]; }, async setFlag(id,key,value) { this.flags[id][key]=value; }, sheet: { async render(){} }, async view(){ this.viewed=true; }, async activate(){ this.active=true; this.activated=(this.activated??0)+1; } };
   collection.push(result);
   return result;
 }
@@ -25,6 +25,12 @@ test('creates six player-readable journal destinations and a non-active gridless
   assert.equal(scene.viewed,undefined);assert.deepEqual(Object.keys(journals),journalDestinations.map(d=>d.key));
   assert.ok(!Object.hasOwn(journals,'maps'));
   assert.ok(game.journal.every(j=>j.ownership.default===2 && j.pages.length===1));
+});
+test('setup activates the landing scene so it loads for everyone at login',async()=>{
+  const { scene }=await installLanding();
+  assert.equal(scene.active,true);assert.equal(scene.activated,1);
+  await installLanding();
+  assert.equal(scene.activated,1,'an already-active landing is not re-activated');assert.equal(scene.viewed,true);
 });
 test('a fresh scene ships no background art of its own',async()=>{
   const { scene }=await installLanding({view:false});

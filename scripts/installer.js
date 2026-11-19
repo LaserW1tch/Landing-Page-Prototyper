@@ -49,6 +49,11 @@ async function createOrRepair({ view }) {
   });
   else await scene.setFlag(MODULE_ID, 'journals', journals);
   ui.notifications.info(background ? 'The landing page is ready. Six campaign journals are linked.' : 'The landing page is ready. Six campaign journals are linked. Choose a background image in Customize landing.');
-  if (view) await scene.view();
+  // Activate (not just view) so the landing is what everyone sees at login.
+  // Activating also moves connected players to it.
+  if (view) {
+    if (!scene.active) await scene.activate();
+    else await scene.view();
+  }
   return { scene, journals };
 }

@@ -140,7 +140,7 @@ Hooks.once('init', () => {
     async render() {
       const accepted = await foundry.applications.api.DialogV2.confirm({
         window: { title: 'Landing Page Prototyper — Create / Repair Landing' },
-        content: '<p>Create one landing scene and six journals, or reconnect existing records. Existing journal content and scene customisation are preserved. New records are readable by all players.</p><p>Maps are configured Scene links and do not create a journal. This views the scene for you only. Use Foundry’s scene activation when ready to bring your players here.</p>',
+        content: '<p>Create one landing scene and six journals, or reconnect existing records. Existing journal content and scene customisation are preserved. New records are readable by all players.</p><p>Maps are configured Scene links and do not create a journal.</p><p><strong>This activates the landing scene</strong>, so it’s what everyone sees when they log in. Any players who are connected now are moved to it.</p>',
         yes: { label: 'Create / Repair Landing' }, rejectClose: false
       });
       if (accepted) {
