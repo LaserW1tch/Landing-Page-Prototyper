@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Landing Page Prototyper — Preview</title><link rel="stylesheet" href="styles/landing.css"></head>
+<body class="cm-preview">
+  <main id="preview" class="cm-landing" aria-label="Campaign landing"></main>
+  <dialog class="cm-preview-dialog" aria-labelledby="destination-title"><p class="cm-journal-eyebrow">CAMPAIGN RECORD</p><h2 id="destination-title"></h2><p>This record is waiting to be written.</p><p>In Foundry, this link opens its own journal entry. Its pages start blank for the GM to write.</p><form method="dialog"><button>Return to the village</button></form></dialog>
+  <script type="module">
+    import { DESTINATIONS, landingMarkup } from './scripts/presentation.js';
+    document.getElementById('preview').innerHTML=landingMarkup();
+    const dialog=document.querySelector('dialog');
+    document.querySelectorAll('[data-cm-destination]').forEach(button=>button.addEventListener('click',()=>{
+      document.getElementById('destination-title').textContent=DESTINATIONS.find(d=>d.key===button.dataset.cmDestination).name;
+      dialog.querySelectorAll('p')[2].textContent=button.dataset.cmDestination==='cast' ? 'The live Cast page reads your character actors inside Foundry. Use Manage cast in Foundry to connect your PCs.' : 'In Foundry, this link opens its own journal entry. Its pages start blank for the GM to write.';
+      dialog.showModal();
+    }));
+    dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+  </script>
+</body>
+</html>

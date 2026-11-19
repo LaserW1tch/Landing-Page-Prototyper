@@ -1,0 +1,5 @@
+backups/
+dist/
+releases/
+docs/verification/
+node_modules/
