@@ -3,3 +3,8 @@ dist/
 releases/
 docs/verification/
 node_modules/
+
+# Private notes and backups live outside this folder (Foundry serves every file
+# inside a module folder). These rules guard against recreating them here.
+private/
+/AGENTS.md

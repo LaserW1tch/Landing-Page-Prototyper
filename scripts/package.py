@@ -30,14 +30,16 @@ with ZipFile(target) as archive:
     assert all('/backups/' not in n and '/docs/verification/' not in n and '/tests/' not in n for n in archive.namelist())
     assert not any(n.endswith(('/story-content.js', '/rules-content.js', '/details-content.js', '/graveyard-content.js')) for n in archive.namelist())
     # Private, git-ignored list of words that must never ship (one per line).
-    terms_file = ROOT / 'backups' / 'forbidden-terms.txt'
-    terms = [t.strip().lower() for t in terms_file.read_text().splitlines() if t.strip()] if terms_file.exists() else []
+    # Kept outside the module folder (Foundry serves everything inside it).
+    candidates = [ROOT.parent / f'{ROOT.name}-private' / 'backups' / 'forbidden-terms.txt', ROOT / 'backups' / 'forbidden-terms.txt']
+    terms_file = next((c for c in candidates if c.exists()), None)
+    terms = [t.strip().lower() for t in terms_file.read_text().splitlines() if t.strip()] if terms_file else []
     for name in archive.namelist():
         data = archive.read(name).decode('utf-8', 'replace').lower() if name.endswith(('.js', '.css', '.json', '.md', '.html', '.txt')) else ''
         for term in terms:
             assert term not in name.lower() and term not in data, f'forbidden term found in {name}'
     if not terms:
-        print('warning: no backups/forbidden-terms.txt; forbidden-term check skipped')
+        print('warning: no forbidden-terms.txt found; forbidden-term check skipped')
 checksum = hashlib.sha256(target.read_bytes()).hexdigest()
 target.with_suffix('.zip.sha256').write_text(f'{checksum}  {target.name}\n')
 print(f'{target}\n{len(files)} runtime files; ZIP verified; SHA-256 {checksum}')
