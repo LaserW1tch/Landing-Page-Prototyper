@@ -23,10 +23,12 @@ body.cm-landing-active #pause{display:none}
 .cm-flourish span:last-child{transform:rotate(180deg)}
 .cm-flourish svg{width:22px;height:22px;fill:currentColor;opacity:.9}
 .cm-invitation{font-size:20px;font-style:italic;letter-spacing:.04em;color:#c0c8bd;margin:0}
-/* Scene-space layout. At Foundry's minimum 1366x768 window the 1920x1200 scene
-   is drawn at ~0.71 scale with ~60 scene px cropped top and bottom; bottom:290px
-   keeps the buttons above the hotbar, players list and chat input there. */
-.cm-navigation{position:absolute;left:5%;right:5%;bottom:290px;max-width:1480px;margin-inline:auto}
+/* Scene-space layout. Foundry's default view fits the whole 1920x1200 scene
+   (plus one grid square of margin) in the window: ~0.55 scale at the minimum
+   1366x768. bottom:115px keeps the buttons near the bottom of the image; at
+   1366x768 only their lower frame edge meets the hotbar (labels stay clear),
+   and at 1920x1080 and up the hotbar sits below the image entirely. */
+.cm-navigation{position:absolute;left:5%;right:5%;bottom:115px;max-width:1480px;margin-inline:auto}
 .cm-nav-heading{display:flex;align-items:center;justify-content:center;gap:20px;margin:0 0 18px}
 .cm-nav-heading span{height:1px;width:120px;background:linear-gradient(90deg,transparent,#8b927e70)}
 .cm-nav-heading span:last-child{transform:rotate(180deg)}

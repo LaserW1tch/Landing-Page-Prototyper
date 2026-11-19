@@ -105,15 +105,6 @@ export async function renderLanding() {
   syncSceneTransform();
 }
 
-function frameScene() {
-  // Only the landing itself is framed; configured maps keep their own initial view.
-  if (!document.getElementById('laserw1tch-landing') || !canvas.ready || !canvas.scene?.getFlag(MODULE_ID, 'landing')) return;
-  // A landing illustration fills the viewport; this does not change the Scene data.
-  const { sceneRect } = canvas.dimensions;
-  canvas.pan({ x: sceneRect.x + sceneRect.width / 2, y: sceneRect.y + sceneRect.height / 2,
-    scale: Math.max(innerWidth / sceneRect.width, innerHeight / sceneRect.height) });
-}
-
 function syncSceneTransform() {
   const root = document.getElementById('laserw1tch-landing');
   if (!root || !canvas.ready) return;
@@ -167,7 +158,8 @@ Hooks.once('ready', () => {
   // Covers enabling/reloading while the canvas is already ready.
   if (canvas.ready) renderLanding();
 });
-Hooks.on('canvasReady', async () => { await renderLanding(); frameScene(); });
+// Foundry's own default view is used: the whole landing image fits the window.
+Hooks.on('canvasReady', () => renderLanding());
 Hooks.on('canvasTearDown', () => { currentPage = 'landing'; castPage = 0; removeLanding(); });
 Hooks.on('updateScene', scene => { if (canvas.scene?.id === scene.id) renderLanding(); });
 Hooks.on('canvasPan', syncSceneTransform);
