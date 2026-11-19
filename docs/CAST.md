@@ -12,7 +12,7 @@ The world setting **Show cast summaries to all players** is on by default. Every
 
 Turn the setting off to get the old behaviour. Then a viewer without Observer sees a locked card: name and portrait if they have Limited, otherwise “Unshared character”, and no stats. In that mode the card never reads the actor’s system data. Existing actor permissions are never changed unless the GM explicitly checks **Share selected actors with all players (Observer)**, which grants access to the entire sheet and is no longer needed for the Cast page.
 
-## Live field mapping (D&D5e6.0.6)
+## Live field mapping (D&D5e 6.0.6; checked on 6.1.0)
 
 | Display | Foundry source |
 |---|---|
@@ -34,4 +34,4 @@ The visible Cast responds to create/update/delete hooks for Actor, Item, ActiveE
 
 ## Presentation
 
-Same landing Scene/background; no new world scene is activated when one player enters Cast. Selection is per client. The full view shares the scene camera transform, including mousewheel over controls. Up to six panels per page; three-by-two at six, group centered horizontally and vertically in scene space. Portrait left, name/pronouns/class and six numeric/movement fields right, player attribution below. Clicking portrait opens the native permitted character sheet. More than six PCs paginate; Back returns to the landing with its camera retained.
+Same landing Scene/background; no new world scene is activated when one player enters Cast. Selection is per client. The full view shares the scene camera transform, including mousewheel over controls. Up to six panels per page; three-by-two at six, group centered horizontally and vertically in scene space. Portrait left, name/pronouns/class and six numeric/movement fields right, player attribution below. Clicking portrait opens the native permitted character sheet. More than six PCs paginate; the Previous / Next controls and page count sit in the header beside Back and Manage cast, so they stay on screen at Foundry's minimum 1366×768 window. Back returns to the landing with its camera retained.

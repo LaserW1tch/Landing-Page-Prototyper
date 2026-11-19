@@ -6,7 +6,14 @@
   <dialog class="cm-preview-dialog" aria-labelledby="destination-title"><p class="cm-journal-eyebrow">CAMPAIGN RECORD</p><h2 id="destination-title"></h2><p>This record is waiting to be written.</p><p>In Foundry, this link opens its own journal entry. Its pages start blank for the GM to write.</p><form method="dialog"><button>Return to the village</button></form></dialog>
   <script type="module">
     import { DESTINATIONS, landingMarkup } from './scripts/presentation.js';
-    document.getElementById('preview').innerHTML=landingMarkup();
+    import { applyLandingTypography } from './scripts/landing-config.js';
+    // ?style=gothic|parchment|etched|arcane|minimal|iron  ?bg=dark|light|busy  ?glow=%23ff9f43  ?backing (gothic)
+    const params=new URLSearchParams(location.search);
+    const config={buttonStyle:params.get('style')||'gothic',glow:params.get('glow')||'#a363ff',gothicBacking:params.has('backing'),buttons:DESTINATIONS.map(d=>d.key)};
+    document.body.dataset.previewBg=params.get('bg')||'dark';
+    const root=document.getElementById('preview');
+    root.innerHTML=landingMarkup(config);
+    applyLandingTypography(root,config);
     const dialog=document.querySelector('dialog');
     document.querySelectorAll('[data-cm-destination]').forEach(button=>button.addEventListener('click',()=>{
       document.getElementById('destination-title').textContent=DESTINATIONS.find(d=>d.key===button.dataset.cmDestination).name;

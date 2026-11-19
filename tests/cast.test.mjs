@@ -54,3 +54,19 @@ test('six panels form one page and additional characters paginate without losing
   const models=Array.from({length:7},(_,i)=>({...actorCastModel(actor(),null,{}),actorId:`pc${i}`,name:`PC ${i}`}));
   assert.equal((castMarkup(models).match(/data-cm-actor=/g)||[]).length,6);assert.equal((castMarkup(models,{page:1}).match(/data-cm-actor=/g)||[]).length,1);assert.ok(castMarkup(models,{page:1}).includes('PC 6'));
 });
+
+test('cast page controls sit in the header so they stay on screen at 1366x768', () => {
+  const models = Array.from({ length: 7 }, () => actorCastModel(actor(), null, {}));
+  const header = html => html.slice(html.indexOf('<header class="cm-cast-header">'), html.indexOf('</header>'));
+  const first = header(castMarkup(models, { page: 0, isGM: true }));
+  assert.ok(first.includes('data-cm-back'));
+  assert.ok(first.includes('data-cm-cast-page="1"'));
+  assert.ok(/data-cm-cast-page="-1" disabled/.test(first));
+  assert.ok(first.includes('1 / 2'));
+  assert.ok(first.includes('data-cm-configure'));
+  const last = castMarkup(models, { page: 1 });
+  assert.ok(/data-cm-cast-page="2" disabled/.test(header(last)));
+  assert.ok(!last.includes('data-cm-configure'));
+  assert.ok(!last.includes('cm-cast-pagination'));
+  assert.ok(!header(castMarkup(models.slice(0, 6))).includes('data-cm-cast-page'));
+});

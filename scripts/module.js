@@ -106,7 +106,8 @@ export async function renderLanding() {
 }
 
 function frameScene() {
-  if (!document.getElementById('laserw1tch-landing') || !canvas.ready) return;
+  // Only the landing itself is framed; configured maps keep their own initial view.
+  if (!document.getElementById('laserw1tch-landing') || !canvas.ready || !canvas.scene?.getFlag(MODULE_ID, 'landing')) return;
   // A landing illustration fills the viewport; this does not change the Scene data.
   const { sceneRect } = canvas.dimensions;
   canvas.pan({ x: sceneRect.x + sceneRect.width / 2, y: sceneRect.y + sceneRect.height / 2,
@@ -116,6 +117,8 @@ function frameScene() {
 function syncSceneTransform() {
   const root = document.getElementById('laserw1tch-landing');
   if (!root || !canvas.ready) return;
+  // On a configured map the only control is the screen-fixed Back button.
+  if (root.classList.contains('cm-map-route')) { root.style.removeProperty('transform'); root.style.removeProperty('width'); root.style.removeProperty('height'); return; }
   const sceneRect = canvas.dimensions.sceneRect;
   const transform = sceneOverlayTransform({
     sceneRect,

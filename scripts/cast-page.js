@@ -7,15 +7,14 @@ export function castMarkup(models, { page = 0, isGM = false } = {}) {
   const columns = Math.min(3, visible.length || 1);
   return `<div class="cm-frame" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
     <header class="cm-cast-header">
-      <button type="button" class="cm-cast-control" data-cm-back>← Back</button>
+      <div class="cm-cast-header-side"><button type="button" class="cm-cast-control" data-cm-back>← Back</button>${pageCount > 1 ? `<button type="button" class="cm-cast-control" data-cm-cast-page="${page - 1}" ${page === 0 ? 'disabled' : ''}>‹ Previous</button>` : ''}</div>
       <h1>Our Cast of Characters</h1>
-      ${isGM ? '<button type="button" class="cm-cast-control" data-cm-configure>Manage cast</button>' : '<span></span>'}
+      <div class="cm-cast-header-side cm-cast-header-end">${pageCount > 1 ? `<span class="cm-cast-page-count" aria-label="Page ${page + 1} of ${pageCount}">${page + 1} / ${pageCount}</span><button type="button" class="cm-cast-control" data-cm-cast-page="${page + 1}" ${page === pageCount - 1 ? 'disabled' : ''}>Next ›</button>` : ''}${isGM ? '<button type="button" class="cm-cast-control" data-cm-configure>Manage cast</button>' : ''}</div>
     </header>
     <section class="cm-cast-body" aria-label="Player characters">
       ${visible.length ? `<div class="cm-cast-grid" style="--cm-cast-columns:${columns};max-width:${columns * 560 + (columns - 1) * 24}px">${visible.map(renderCard).join('')}</div>` : `
         <div class="cm-cast-empty"><h2>The company awaits.</h2><p>${isGM ? 'Use Manage cast to choose character actors and their players, or assign characters in Foundry’s User Configuration.' : 'The Game Master has not connected the cast yet.'}</p></div>`}
-    </section>
-    ${pageCount > 1 ? `<nav class="cm-cast-pagination" aria-label="Cast pages"><button type="button" class="cm-cast-control" data-cm-cast-page="${page - 1}" ${page === 0 ? 'disabled' : ''}>← Previous</button><span>${page + 1} / ${pageCount}</span><button type="button" class="cm-cast-control" data-cm-cast-page="${page + 1}" ${page === pageCount - 1 ? 'disabled' : ''}>Next →</button></nav>` : ''}`;
+    </section>`;
 }
 
 function renderCard(model) {

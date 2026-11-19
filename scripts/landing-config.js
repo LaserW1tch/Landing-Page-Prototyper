@@ -1,8 +1,8 @@
-import { MODULE_ID, DESTINATIONS, escapeHTML } from './presentation.js';
+import { MODULE_ID, DESTINATIONS, BUTTON_STYLES as STYLES, escapeHTML } from './presentation.js';
 
 export const DEFAULT_LANDING = {
   title: 'Your Campaign', buttons: DESTINATIONS.filter(d => !d.special).map(d => d.key), maps: [], titleFont: 'Modesto Condensed', buttonFont: 'Amiri',
-  background: '', outsideColor: '#111315', buttonStyle: 'gothic', glow: '#a363ff', titleSize: 150, buttonSize: 34
+  background: '', outsideColor: '#111315', buttonStyle: 'gothic', gothicBacking: false, glow: '#a363ff', titleSize: 150, buttonSize: 34
 };
 
 // No fonts are bundled. Offer whatever Foundry has loaded: its built-in fonts plus
@@ -17,7 +17,6 @@ function pickFont(name, fallback) {
   return fonts.includes(name) ? name : fonts.includes(fallback) ? fallback : (fonts[0] ?? fallback);
 }
 const cssFont = name => `"${String(name).replace(/["\\]/g, '')}"`;
-const STYLES = ['gothic', 'parchment', 'etched', 'arcane', 'minimal', 'iron'];
 const GLOWS = ['#a363ff', '#ff4d6d', '#ff9f43', '#ffe66d', '#7bed9f', '#70d6ff', '#ff70a6', '#f8f9fa'];
 
 export function applyLandingTypography(root, config = {}) {
@@ -30,6 +29,7 @@ export function applyLandingTypography(root, config = {}) {
   root.style.setProperty('--cm-user-button-size', `${Number(c.buttonSize)}px`);
   root.style.setProperty('--cm-user-glow', c.glow);
   root.dataset.buttonStyle = STYLES.includes(c.buttonStyle) ? c.buttonStyle : STYLES[0];
+  if (c.gothicBacking) root.dataset.gothicBacking = 'on'; else delete root.dataset.gothicBacking;
   return c;
 }
 
@@ -56,6 +56,8 @@ export async function configureLanding() {
     <p class="cm-cast-config-hint">This module doesn’t include any fonts. The lists show Foundry’s built-in fonts plus any you’ve added. For more variety, download fonts you’re licensed to use and add them in <strong>Configure Settings → Core → Additional Fonts</strong>, then reopen this dialog.</p>
     <label>Outside scene color<input type="color" name="outsideColor" value="${escapeHTML(config.outsideColor)}"><small>Dark canvas color visible around the landing Scene.</small></label>
     <label>Button appearance<select name="buttonStyle">${STYLES.map(style => `<option value="${style}" ${config.buttonStyle === style ? 'selected' : ''}>${style[0].toUpperCase() + style.slice(1)}</option>`).join('')}</select></label>
+    <label class="cm-config-check"><input type="checkbox" name="gothicBacking" ${config.gothicBacking ? 'checked' : ''}>Faint backing behind Gothic buttons</label>
+    <p class="cm-cast-config-hint">Gothic buttons are transparent over the scene. Turn this on if the button text is hard to read over a light or busy background. The other appearances always have their own backing.</p>
     <label>Hover glow<select name="glow">${GLOWS.map((color,index) => `<option value="${color}" ${config.glow === color ? 'selected' : ''}>${['Violet','Crimson','Amber','Gold','Green','Blue','Rose','White'][index]}</option>`).join('')}</select><span class="cm-color-swatch" data-cm-color-swatch style="--cm-swatch:${config.glow}"></span></label>
     <fieldset><legend>Landing buttons</legend>${DESTINATIONS.map(d => `<label class="cm-config-check"><input type="checkbox" name="button-${d.key}" ${checked(d.key)}>${escapeHTML(d.name)}</label>`).join('')}</fieldset>
     <fieldset><legend>Maps button destinations (up to 3)</legend><p>Choose existing scenes. These are opened for the current user only; the shared active scene does not change.</p>${[0,1,2].map(index => `<label>Map ${index+1}<select name="map-${index}"><option value="">— None —</option>${game.scenes.contents.filter(s => !s.getFlag(MODULE_ID,'landing')).sort((a,b)=>a.name.localeCompare(b.name)).map(s=>`<option value="${s.id}" ${config.maps?.[index]===s.id?'selected':''}>${escapeHTML(s.name)}</option>`).join('')}</select></label>`).join('')}</fieldset>
@@ -68,7 +70,7 @@ export async function configureLanding() {
       if (form.elements['button-maps'].checked) buttons.push('maps');
       if (!buttons.length) { ui.notifications.warn('Select at least one landing button.'); return false; }
       const maps = [0,1,2].map(index => form.elements[`map-${index}`].value).filter(Boolean);
-      const next = { title: form.elements.title.value.trim() || 'Your Campaign', background: form.elements.background.value.trim(), titleFont: form.elements.titleFont.value, buttonFont: form.elements.buttonFont.value, outsideColor: form.elements.outsideColor.value, buttonStyle: form.elements.buttonStyle.value, glow: form.elements.glow.value, buttons, maps };
+      const next = { title: form.elements.title.value.trim() || 'Your Campaign', background: form.elements.background.value.trim(), titleFont: form.elements.titleFont.value, buttonFont: form.elements.buttonFont.value, outsideColor: form.elements.outsideColor.value, buttonStyle: form.elements.buttonStyle.value, gothicBacking: form.elements.gothicBacking.checked, glow: form.elements.glow.value, buttons, maps };
       for (const name of ['titleSize','buttonSize']) next[name] = Math.max(18, Math.min(240, Number(form.elements[name].value) || DEFAULT_LANDING[name]));
       await game.settings.set(MODULE_ID, 'landingConfig', next);
       const landingScene = game.scenes.find(scene => scene.getFlag(MODULE_ID, 'landing'));

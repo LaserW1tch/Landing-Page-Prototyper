@@ -23,3 +23,13 @@ test('fonts added through Foundry Additional Fonts are offered', () => {
   assert.equal(r.props['--cm-title-font'], '"My Added Font"');
   delete globalThis.foundry;
 });
+
+test('gothic backing is off by default and toggles a root data attribute', () => {
+  const r = root();
+  applyLandingTypography(r, {});
+  assert.equal(r.dataset.gothicBacking, undefined);
+  applyLandingTypography(r, { gothicBacking: true });
+  assert.equal(r.dataset.gothicBacking, 'on');
+  applyLandingTypography(r, { gothicBacking: false });
+  assert.equal(r.dataset.gothicBacking, undefined);
+});

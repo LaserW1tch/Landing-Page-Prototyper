@@ -1,6 +1,6 @@
 # LaserW1tch's Landing Page Prototyper 5e
 
-A customizable gothic landing scene for **Foundry VTT 14.367**. The landing overlay anchors to scene coordinates, so its title, borders and buttons zoom and pan with the background. Gothic buttons use an original vector frame drawn for this module over a transparent background. The live Cast page uses a separate readable typeface and live actor data. The landing offers these destinations:
+A customizable gothic landing scene for **Foundry VTT 14** (verified on 14.370). The landing overlay anchors to scene coordinates, so its title, borders and buttons zoom and pan with the background. Gothic buttons use an original vector frame drawn for this module over a transparent background. The live Cast page uses a separate readable typeface and live actor data. The landing offers these destinations:
 
 1. The Story So Far
 2. Our Cast of Characters
@@ -16,6 +16,8 @@ Journal destinations are installed with blank pages for the GM to author. Rebuil
 
 With the preview server running, open **http://localhost:5174/preview.html**. Each card opens a preview of its destination. This browser preview is not the Foundry runtime.
 
+Add `?style=` (`gothic`, `parchment`, `etched`, `arcane`, `minimal` or `iron`) to preview a button appearance, `&bg=light` or `&bg=busy` to check it over a light or busy background, `&glow=%23ff9f43` to try a hover glow colour, and `&backing` to show Gothic's optional backing.
+
 To start it manually from this directory:
 
 ```sh
@@ -24,7 +26,7 @@ python3 -m http.server 5174 --bind 0.0.0.0
 
 ## Foundry installation
 
-This module has **no third-party/community dependencies** and no additional module dependencies. FXMaster is optional. The live Cast statistics target **D&D5e6.0.6**; the landing itself uses core Foundry. It uses a real Foundry Scene, standard JournalEntry documents, ordinary document permissions and core journal sheets. The module supplies the scene-anchored navigation, live Cast view and explicit GM setup actions. It supplies the single-click, keyboard-accessible navigation; custom card navigation is not built into core Foundry.
+This module has **no third-party/community dependencies** and no additional module dependencies. FXMaster is optional. The live Cast statistics target **D&D5e 6.0.6 and 6.1.0**; the landing itself uses core Foundry. It uses a real Foundry Scene, standard JournalEntry documents, ordinary document permissions and core journal sheets. The module supplies the scene-anchored navigation, live Cast view and explicit GM setup actions. It supplies the single-click, keyboard-accessible navigation; custom card navigation is not built into core Foundry.
 
 1. Copy this directory into `Data/modules/laserw1tch-landing-page-prototyper/`, keeping `module.json` directly inside that folder. Alternatively extract the supplied release ZIP into `Data/modules/`.
 2. Restart Foundry to discover the module.
@@ -62,6 +64,8 @@ New worlds do not create any demo characters or players.
 - To temporarily hide the navigation while editing the scene, disable **Show landing navigation** in the module’s client settings. This affects your client only.
 - Disabling the module removes its interactive overlay but preserves the Scene and all journals. Players can still open shared records from the Journal sidebar. Re-enable it to restore the cards.
 - No fonts are bundled. The landing uses Foundry’s built-in fonts: Modesto Condensed for the title and Amiri for buttons and the Cast page. In **Customize landing** you can pick any font Foundry has loaded. For more variety, download fonts you’re licensed to use and add them under **Configure Settings → Core → Additional Fonts**. The module makes no network font requests.
+- **Button appearance** (Customize landing) offers six styles. Gothic is transparent over the scene. Parchment (deckled paper ruled in ink), Etched (smoked-glass plate with an engraved, milled border), Arcane (a sigil panel lit by the hover-glow colour), Minimal (frosted pane with corner brackets) and Iron (a chamfered plate in a riveted strap) each carry their own backing, so they stay readable over any background image. Gothic has an optional **Faint backing behind Gothic buttons** checkbox for light or busy backgrounds. Every style keeps the same line-art icons and draws its own original vector border.
+- **Small screens.** The layout is sized for Foundry's minimum supported window, 1366×768. At that size the scene is drawn at about 71%: everything stays readable, and the landing buttons and Cast page sit clear of Foundry's controls, hotbar, players list and chat input. The landing draws beneath Foundry's own interface, so Foundry's controls always stay clickable. An expanded chat sidebar covers the right side of any scene, including the landing; collapse it to reach buttons underneath.
 - The design uses static moonlight, restrained aged-brass accents and accessible hover/focus states. It includes no autoplay audio, flashing or required animation.
 
 ## Files and validation
